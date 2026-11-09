@@ -14,7 +14,8 @@ import xyz.jpenilla.squaremap.common.server.ServerAccess;
 @DefaultQualifier(NonNull.class)
 public abstract class AbstractPlayerManager implements PlayerManager {
     private final ServerAccess serverAccess;
-    private final Set<UUID> hidden = ConcurrentHashMap.newKeySet();
+    // Titanite: players start hidden and show only after show() this session, so with no Titanite nobody appears.
+    private final Set<UUID> shown = ConcurrentHashMap.newKeySet();
 
     protected AbstractPlayerManager(final ServerAccess serverAccess) {
         this.serverAccess = serverAccess;
@@ -39,7 +40,7 @@ public abstract class AbstractPlayerManager implements PlayerManager {
         if (persistent) {
             this.persistentHidden(player, true);
         }
-        this.hidden.add(player.getUUID());
+        this.shown.remove(player.getUUID());
     }
 
     @Override
@@ -51,7 +52,7 @@ public abstract class AbstractPlayerManager implements PlayerManager {
         if (persistent) {
             this.persistentHidden(player, false);
         }
-        this.hidden.remove(player.getUUID());
+        this.shown.add(player.getUUID());
     }
 
     @Override
@@ -65,11 +66,11 @@ public abstract class AbstractPlayerManager implements PlayerManager {
     }
 
     public final void reload() {
-        this.hidden.clear(); // API Javadoc states non-persistent hidden status will be cleared on plugin reload
+        this.shown.clear(); // API Javadoc states non-persistent status will be cleared on plugin reload
     }
 
     public final boolean hidden(final ServerPlayer player) {
-        return this.hidden.contains(player.getUUID())
+        return !this.shown.contains(player.getUUID())
             || this.persistentHidden(player);
     }
 
