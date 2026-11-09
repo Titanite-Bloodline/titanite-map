@@ -204,7 +204,7 @@ public final class Messages {
 
     // Web UI messages
     @MessageKey("ui.page-title")
-    public static String UI_TITLE = "squaremap - {world}";
+    public static String UI_TITLE = "Titanite Map - {world}";
     @MessageKey("ui.coordinates")
     public static String UI_COORDINATES_HTML = "Coordinates<br/>{x}, {z}";
     @MessageKey("ui.sidebar.player-list")
