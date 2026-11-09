@@ -59,7 +59,8 @@ paperweight {
 }
 
 bukkitPluginYaml {
-  name = "squaremap"
+  name = "TitaniteMap"
+  provides = listOf("squaremap")
   main = "xyz.jpenilla.squaremap.paper.SquaremapPaperBootstrap"
   load = BukkitPluginYaml.PluginLoadOrder.STARTUP
   authors = listOf("jmp")
