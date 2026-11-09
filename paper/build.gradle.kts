@@ -32,7 +32,7 @@ tasks {
     }
   }
   shadowJar {
-    archiveFileName = productionJarName(minecraftVersion)
+    archiveFileName = "TitaniteMap-${project.version}.jar"
     listOf(
       "org.incendo.cloud",
       "io.leangen.geantyref",
