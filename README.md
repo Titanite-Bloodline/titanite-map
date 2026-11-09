@@ -1,3 +1,36 @@
+# Titanite Map
+
+Titanite Map is the Titanite SMP's fork of [squaremap](https://github.com/jpenilla/squaremap) 1.4.3, the live web map for Minecraft servers. It runs on Paper 26.3 with Java 25.
+
+## What this fork changes
+
+The `titanite` branch starts at upstream tag `v1.4.3`. Only these things differ, so upstream fixes still merge cleanly.
+
+- **Plugin name.** The plugin is called `TitaniteMap` and declares `provides: [squaremap]`, so plugins that depend on squaremap still load. The Java packages and the public API (`SquaremapProvider.get()`, `PlayerManager`, the layer registry) are unchanged. The command, the permissions and the log prefix still say `squaremap`. The data folder is `plugins/TitaniteMap`, so an old `plugins/squaremap` folder is not picked up.
+- **Players start hidden.** A player shows on the map only after something calls `PlayerManager.show(uuid, ...)` for them. This is the default inside the player manager, so if Titanite is missing or fails, nobody shows. `hide`, `show` and `hidden` work as before through the API and through `/squaremap hide` and `/squaremap show`. Shown status lasts until the server restarts or `/squaremap reload`, even when `show` is called with `persistent` set to true: a persistent show is not stored, so a missing Titanite cannot leave dots on the map. A persistent `hide` is still stored and still beats a show.
+- **Web page.** The page title is `Titanite Map` (the tab reads `Titanite Map - <world>` once the map loads) and the favicon is the Titanite Minecraft mark. The link preview titles say `Titanite Map`.
+- **Jar name.** The jar is named `TitaniteMap-<version>.jar` (for example `TitaniteMap-1.4.3-titanite.1.jar`). The version is the upstream version plus `-titanite.N`.
+
+Not changed, so you know: the update checker still asks Modrinth about upstream releases and reports this fork as out of date (`settings.update-checker: false` in `config.yml` turns it off). The bStats call still reports under squaremap's id. The Fabric, NeoForge and Sponge modules are untouched and not built here, so the shared player manager change is untested on them.
+
+## Licence
+
+squaremap is MIT and so is this fork. The [LICENSE](LICENSE) file keeps the original copyright (Jason Penilla and contributors).
+
+## Building
+
+You need JDK 25 and [Bun](https://bun.sh/), which builds the web front end. Run `bun install` once inside `web/`, then build only the Paper platform:
+
+```
+./gradlew :squaremap-paper:assemble
+```
+
+The jar lands in `build/libs/`. Set the web server port in `plugins/TitaniteMap/config.yml` under `settings.internal-webserver.port` (the default is 8080).
+
+## The upstream README
+
+What follows is the upstream README.
+
 <div align="center">
 
 # squaremap
